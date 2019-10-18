@@ -1,7 +1,7 @@
 'use strict';
 angular.module('w11k.angular-seo-header', []);
-angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$compile',
-    function($rootScope, $compile) {
+angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$compile', '$transitions',
+    function($rootScope, $compile, $transitions) {
         var  html ='<title ng-if="head.title">{{head.title}}</title>' +
             '<meta name="keywords" content="{{head.keywords}}" ng-if="head.keywords">' +
             '<meta name="description" content="{{head.description}}" ng-if="head.description">' +
@@ -15,7 +15,9 @@ angular.module('w11k.angular-seo-header').directive('head', ['$rootScope', '$com
                 elem.append($compile(html)(scope));
                 scope.head = {};
 
-                $rootScope.$on('$stateChangeStart', function (event, toState,toParams) {
+                $transitions.onStart( {} , function (trans) {
+                    let toState = trans.to()
+                    let toParams = trans.params()
                     if(toState.data && toState.data.head){
                         // head data are available for upcoming view, directive jumps in:
 
